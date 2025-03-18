@@ -1,5 +1,9 @@
  function [ye, yi] = makecorrinput(N, Ke, Ki, re, ri, t, dt, theta)
 
+% DESCRIPTION OF THEORY CAN BE FOUND IN  
+% Exact Analysis of the Subthreshold Variability for Conductance-Based Neuronal Models with Synchronous Synaptic Inputs
+% Becker et al. 2024
+
 % makecorrinput(N,Ke,Ki,r_e,r_i,t,dt,theta): Generates correlated inputs,
 %                                            through a compound poisson process with a beta measure
 %                                            with either within population correlations (rho_e, rho_i)

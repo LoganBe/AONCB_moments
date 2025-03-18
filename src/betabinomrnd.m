@@ -1,5 +1,9 @@
 function [samples] = betabinomrnd(K,nsamp,a0)
 
+% DESCRIPTION OF THEORY CAN BE FOUND IN  
+% Exact Analysis of the Subthreshold Variability for Conductance-Based Neuronal Models with Synchronous Synaptic Inputs
+% Becker et al. 2024
+
 % betabinomrnd(xx,N,nsamp,a0): Generates random samples from the beta binomial distribution.
 %                              pdf = nCx B(x + alpha, K - x + beta)/B(alpha, beta)
 %                              where B is a Beta function
@@ -21,11 +25,10 @@ function [samples] = betabinomrnd(K,nsamp,a0)
 %   samples -- cell of vector of samples taken from the beta binom {number cells each}[nsamp,1]
 %
 
-%assert(K > 0); %Make sure you have at least 1 synapse
-
+% Betabinomial PDF
 f = @(a,x) exp(gammaln(K+1) + gammaln(a(2)+K-x) - gammaln(a(2)+K) - gammaln(K-x+1)-log(x))./(psi(a(2)+K)-psi(a(2)));
 
-%Collect samples
+%Collect samples given probability of f(a,K)
 samples = cell(length(nsamp),1);
 for i = 1:length(nsamp)
     samples{i} = randsample(1:K,nsamp(i),true,f(a0,1:K));

@@ -20,7 +20,7 @@ idx = zeros(1,length(desired_value));
 
 for i = 1:length(desired_value)
 
-    dist = abs(data-desired_value(i)); %
+    dist = abs(data-desired_value(i)); % abs distance
     minDist = min(dist);
     
     idx(i) = find(dist == minDist,1,'first');

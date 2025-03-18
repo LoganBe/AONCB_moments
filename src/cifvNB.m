@@ -1,6 +1,11 @@
 function [V,input,stats,Vpt] = cifvNB(theta,T,ttrim,n)
 
-%CIFVNB: Instant form of the cifv model (no time bins)
+% CIFVNB: Instant form of the cifv model (no time bins) - Used for more
+% accurate simulations but only can be done under certain circumstances.
+% DESCRIPTION OF THEORY CAN BE FOUND IN  
+% Exact Analysis of the Subthreshold Variability for Conductance-Based Neuronal Models with Synchronous Synaptic Inputs
+% Becker et al. 2024
+
 %[V, input, stats] = cifNB(theta,T,ttrim,n) Computes the the voltage of the
 %                    cifv neuron whenever there is an input then computes the statistical voltage moments. 
 %

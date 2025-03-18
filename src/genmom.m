@@ -1,9 +1,14 @@
 function[momz_,momz2_] = genmom(theta,n)
 
+% DESCRIPTION OF THEORY CAN BE FOUND IN  
+% Subthreshold moment analysis of neuronal populations driven by synchronous synaptic inputs
+% Becker et al. 2025
+
 %STATCORR_BETA: Theoertical Mean and Variance of V
 %[meanV, varV] = statcorr_beta(theta) Computes the mean and variance of an
 %                AONCB neuron. If input correlations are present, assumes a
-%                Beta distribution for the deFinetti Measure
+%                Beta distribution for the deFinetti Measure. Using
+%                recurrsive itterations to caluclate nth order moments
 %
 % Input:
 %       theta -- structure with model paratmers given by:
@@ -37,6 +42,8 @@ W = theta.Wf; We = W(1,1); Wi = W(1,2); %Synaptic Weights, excitatory and inhibi
 Ve = theta.ereversal; % Excitatory Reversal
 Vi = theta.ireversal; % Inhibitory Reversal
 tauleak = theta.tauleak; % Leak Time Constant
+
+% Defaults
 if isfield(theta,'I'); I = theta.I; else; I = 0; end %External Current
 if isfield(theta.corrinfo,'corridx'); arho = theta.corrinfo.corridx; else; arho = 0; end
 if ~isfield(theta,'ir'); irflag = false; else; irflag = theta.ir; end %Default no intrinisc resistance
@@ -188,9 +195,7 @@ else % When there is corr
     fE_val(1,:) = bnorme.*epdf(0:Ke);
     fI_val(:,1) = bnormi.*ipdf(0:Ki);
 
-    % R = (KeWeVe + KiWiVi)/(KeWe + KiWi)
     R = @(k1,w1,k2,w2) (k1.*w1.*Ve + k2.*w2.*Vi)./(k1.*w1 + k2.*w2);
-    % x = (1-exp(-(KeWe+KiWi)))
     x = @(k1,w1,k2,w2) exp(-(w1.*k1 + w2.*k2)/tauleak);
     
     if arho == 0
@@ -216,12 +221,10 @@ else % When there is corr
         end
         fval_2 = 0;
         for j = 1:(i-2)
-            %fval_temp = nchoosek(i,j).*sum((x(WWE,We,WWI,Wi).^(i-j)-1)).*(R(WWE,We,WWI,Wi)-momz(2)).^j.*(1-x(WWE,We,WWI,Wi)).^j.*rhs,'all','omitnan')*momz_(i-j);
             fval_temp = nchoosek(i,j).*sum(x(KE,We,KI,Wi).^(i-j).*(R(KE,We,KI,Wi)-momz(2)).^j...
                                             .*(1-x(KE,We,KI,Wi)).^j.*rhs,'all','omitnan')*momz_(i-j);
             fval_2 = fval_temp + fval_2;
         end
-        %fval_temp = nchoosek(i,1).*sum((R(WWE,We,WWI,Wi)-momz(2)).*(1-x(WWE,We,WWI,Wi)).*rhs,'all','omitnan');
         if i > 1
             fval_2 = fval_2 - i*(momz(2)/(b*tauleak)).*momz_(i-1);
         end

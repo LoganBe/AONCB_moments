@@ -1,4 +1,8 @@
-function [yc,ysp,phi] = makecopinput(theta,t,dt,Ne,Ni,corrmat,nneuron,sameneuron)
+function [yc,ysp,phi] = makecopinput(theta,t,dt,Ne,Ni,corrmat,nneuron)
+
+% DESCRIPTION OF THEORY CAN BE FOUND IN  
+% Exact Analysis of the Subthreshold Variability for Conductance-Based Neuronal Models with Synchronous Synaptic Inputs
+% Becker et al. 2024
 
 % MAKECOPINPUT
 %   [yc,ysp,phi] = makecopinput(theta,t,dt,npair,nneuron,corrmat)
@@ -23,8 +27,7 @@ function [yc,ysp,phi] = makecopinput(theta,t,dt,Ne,Ni,corrmat,nneuron,sameneuron
 %
 % *************************************************************
 
-if nargin < 7; nneuron = 1; sameneuron = 0; end % Defualt number of repeats is 0
-if nargin < 8; sameneuron = 0; end
+if nargin < 7; nneuron = 1; end % Defualt number of repeats is 0
 
 %Mean Activity
 mu_e = theta.r.ee.*dt.*1e-3; %Excitatory Rate
@@ -42,7 +45,6 @@ d = Ne+Ni;
 alpha = [repmat(a_e,Ne,1);repmat(a_i,Ni,1)];
 beta = [repmat(b_e,Ne,1);repmat(b_i,Ni,1)];
 
-
 % Create Cov Mat from Sig Mat
 D = eye(d); 
 Sigma = D*corrmat*D;
@@ -52,38 +54,20 @@ assert(all(eigs(corrmat) >= -1e-14) & all(isreal(eigs(corrmat))),'Corr Mat Not P
 
 T = length(t);
 ysp = cell(nneuron,d); yc = cell(1,d);
-if sameneuron
-    for i = 1:d
-        Z = mvnrnd(zeros(d,1),Sigma,T); %Take mvn samples with cov Sigma
-        temp1 = normcdf(Z,zeros(size(Z)),ones(size(Z))); %Get copula given by normal cdf
-        phi = betainv(temp1',alpha.*ones(size(temp1')),beta.*ones(size(temp1')))'; %Get rate through inverse beta distribution 
+for nn = 1:nneuron
+    Z = mvnrnd(zeros(d,1),Sigma,T); %Take mvn samples with cov Sigma
+    temp1 = normcdf(Z,zeros(size(Z)),ones(size(Z))); %Get copula given by normal cdf
+    phi = betainv(temp1',alpha.*ones(size(temp1')),beta.*ones(size(temp1')))'; %Get rate through inverse beta distribution 
 
-        if length(theta.K) > 1
-            Ks = [theta.K(1).ee;theta.K(2).ee; theta.K(1).ei.*ones(npair/2,1)];
-        else
-            Ks = [theta.K.ee.*ones(npair/2,1); theta.K.ei.*ones(npair/2,1)];
-        end
-        for nn = 1:nneuron
-           ysp{nn,i} = phi(:,i) > rand(length(t),Ks(i));
-           yc{i} = [yc{i},sum(ysp{nn,i},2)];
-        end
+    %Get spikes through Poisson process and rate phi
+    if length(theta.K) > 1
+        Ks = [theta.K(1).ee;theta.K(2).ee; theta.K(1).ei.*ones(npair/2,1)];
+    else
+        Ks = [theta.K.ee.*ones(Ne,1); theta.K.ei.*ones(Ni,1)];
     end
-else
-    for nn = 1:nneuron
-        Z = mvnrnd(zeros(d,1),Sigma,T); %Take mvn samples with cov Sigma
-        temp1 = normcdf(Z,zeros(size(Z)),ones(size(Z))); %Get copula given by normal cdf
-        phi = betainv(temp1',alpha.*ones(size(temp1')),beta.*ones(size(temp1')))'; %Get rate through inverse beta distribution 
-
-        %Get spikes through Poisson process and rate phi
-        if length(theta.K) > 1
-            Ks = [theta.K(1).ee;theta.K(2).ee; theta.K(1).ei.*ones(npair/2,1)];
-        else
-            Ks = [theta.K.ee.*ones(Ne,1); theta.K.ei.*ones(Ni,1)];
-        end
-        for i = 1:d
-           ysp{nn,i} = phi(:,i) > rand(length(t),Ks(i));
-           yc{i} = [yc{i},sum(ysp{nn,i},2)];
-        end
+    for i = 1:d
+       ysp{nn,i} = phi(:,i) > rand(length(t),Ks(i));
+       yc{i} = [yc{i},sum(ysp{nn,i},2)];
     end
 end
 
