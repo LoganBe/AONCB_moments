@@ -3,7 +3,15 @@ rng(6895)
 
 set(0,'DefaultAxesFontSize',14)
 
-% DESCRIPTION HERE
+% Figures 7 and 9
+% Examine the effects of cross neuron correlated inputs on voltage correlations. 
+% First holds inhibitory paramters constant
+% Second holds excitatory paramters constant
+% Lastly changes in both excitatory and inhibitory firing rate
+% Fig 7 - only within-pool correlations
+% Fig 9 - cross pool correlations
+
+% nomenclature:
 % For correlations _w = within same neuron, _x = across pair of neurons
 % For example, rhoe_w is excitatory<-> excitatory within same neuron
 % while rhoe_x is excitatoy <-> excitatory across neurons
@@ -278,12 +286,14 @@ corrVt_lwI = corrVt_fL(Ke,Ki,rre,rri,meanVt,rhoe_w,rhoi_w,rhoei_w,rho_e_x,rho_i,
 figure(20); clf; hold on
 plot(rho_e,corrVt_swE)
 plot(rho_e,corrVt_lwE)
+legend({'Small Weight','Large Weight'},'Box','off')
 ylim([0,1])
 xlabel('\rho_{ex}'); ylabel('\rho')
 
 figure(21); clf; hold on
 plot(rho_i,corrVt_swI)
 plot(rho_i,corrVt_lwI)
+legend({'Small Weight','Large Weight'},'Box','off')
 ylim([0,1])
 xlabel('\rho_{ix}'); ylabel('\rho')
 
@@ -350,6 +360,7 @@ rho_x_ind = linspace(0,rhoe_w,500);
 figure(24); clf; hold on
 plot(rho_x_ind,corrVt_swW)
 plot(rho_x_ind,corrVt_lwW)
+legend({'Small Weight','Large Weight'},'Box','off')
 ylim([0,1])
 xlabel('\rho_w'); ylabel('\rho')
 
@@ -357,5 +368,6 @@ rho_x_x = linspace(0,0.03,500);
 figure(25); clf; hold on
 plot(rho_x_x,corrVt_swX)
 plot(rho_x_x,corrVt_lwX)
+legend({'Small Weight','Large Weight'},'Box','off')
 ylim([0,1])
 xlabel('\rho_x'); ylabel('\rho')

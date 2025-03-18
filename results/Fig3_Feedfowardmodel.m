@@ -2,8 +2,9 @@ clear; clc; close all;
 rng(6895)
 set(0,'DefaultAxesFontSize',14)
 
-% DESCRIPTION HERE
-
+% Figure 3
+% Example correlated inputs from large pool of K neurons sampled to
+% generated 3 neurons with correlated voltages.
 %% Time Info and constants
 dt = 0.1; %Time step (ms)
 tmax = 2e3; %Max time (ms)
@@ -97,6 +98,7 @@ figure(1); clf; hold on
 raster_plot(inplot_i,dt*1e-3,'b');
 raster_plot(inplot_e,dt*1e-3,'r',100*3);
 xlim([0,2]); ylim([0,350*3])
+xlabel('Time (s)'); ylabel('Neuron ID')
 
 figure(2); clf; 
 plot(tt,V1,'k','linewidth',2); box off

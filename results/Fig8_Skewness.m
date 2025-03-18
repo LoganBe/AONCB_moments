@@ -2,7 +2,12 @@ clear; clc; close all
 rng(6895)
 set(0,'DefaultAxesFontSize',14)
 
-% DESCRIPTION HERE
+% Figure 8
+% Examine the effects of input correlations on voltage skewness. 
+% First shows example voltage traces for aysnch/synch case
+% Second uses full moment to show theory and simulation agreement
+% Third shows the effects of drive on skewness
+% Lastly shows the effects of input correlations on skewness
 %% Time Info and constants
 dt = 0.1; %Time step (ms)
 tmax = 5e3; %Max time (ms)
@@ -93,7 +98,7 @@ theta.corrinfo.ae1 = 0; theta.corrinfo.ae2 = beta_e;
 theta.corrinfo.ai1 = 0; theta.corrinfo.ai2 = beta_i;
 theta.corrinfo.corridx = 0; 
 
-T = 1e7; trim = 100;
+T = 1e6; trim = 100;
 
 % Calculate Moments
 kk = 6; % number of moms
@@ -110,7 +115,6 @@ for z = 1:rp
         end
     end
     [momzuc,tempm] = genmom(theta,kk);
-    pcdone(z,rp)
 end
 cenmomluc_ = cenmomuc_;
 
@@ -141,7 +145,6 @@ for z = 1:rp
         end
     end
     momzc = genmom(theta,kk); % Theory
-    pcdone(z,rp)
 end
 cenmomlc_ = cenmomc_;
 
@@ -188,6 +191,7 @@ end
 figure(3); clf;
 plot(rbank,skewVs,'linewidth',2)
 legend({'e only','i only','e + i'},'box','off')
+xlabel('r (Hz)'); ylabel('Skew')
 box off
 
 %% Eff of skew for difference in corr
@@ -217,6 +221,7 @@ end
 figure(4); clf;
 plot(rbank,skewVs,'linewidth',2)
 legend({'Uncorr','Within corr','Cross Corr'},'box','off')
+xlabel('r (Hz)'); ylabel('Skew')
 box off
 
 %% Grid of K and Rho at low rate (1 Hz)
@@ -233,12 +238,12 @@ for i = 1:length(rhobank)
         theta.K.ee = kbank(j); theta.K.ei = kbank(j)/4;
         [~,vartemp,skewVkrho(i,j)] = swstats(theta);
     end
-    pcdone(i,length(rhobank))
 end
 
 figure(5); clf;
 imagesc(rhobank,kbank,skewVkrho')
 yticks(100:200:1500)
+xlabel('\rho'); ylabel('K')
 set(gca,'Ydir','normal')
 box off; colorbar
 
@@ -254,10 +259,10 @@ for i = 1:length(rhobank)
         theta.r.ee = rbank(j); theta.r.ei = rbank(j);
         [~,vartemp,skewVkrho(i,j)] = swstats(theta);
     end
-    pcdone(i,length(rhobank))
 end
 
 figure(6); clf;
 imagesc(rhobank,rbank,skewVkrho')
 set(gca,'Ydir','normal')
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off; colorbar

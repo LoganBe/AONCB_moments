@@ -1,9 +1,9 @@
 clear; clc; close all
-rng(6895)
+rng(6896)
 set(0,'DefaultAxesFontSize',14)
 
-% DESCRIPTION HERE
-
+% Figure 4
+% Example Poisson-arrival-see-time-average demonstration
 %% Time Info and constants
 dt = 0.1; %Time step (ms)
 tmax = 5e3; %Max time (ms)

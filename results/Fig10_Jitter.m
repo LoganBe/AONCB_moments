@@ -1,7 +1,15 @@
 clear; clc; close all;
 rng(6895)
 set(0,'DefaultAxesFontSize',14)
-% DESCRIPTION HERE
+
+% Figure 10
+% Examine the effects of input jitter on voltage skewness and correlation. 
+% First shows example voltage traces for inst and jitter case with
+% increasing rate for 1 neuron
+% Second compares skewness for inst and jitter method
+% Third shows example voltage traces for inst and jitter case with
+% increasing rate for 2 neurons
+% Lastly compares voltage correlations for inst and jitter method
 
 %% Time Info and constants
 dt = 0.1; %Time step (ms)
@@ -52,7 +60,7 @@ theta.r.ee = re; theta.r.ei = ri;
 %% Skewness for Jitter for varying rate
 sig = 50; % STD for jitter (ms)
 
-rbank = linspace(5,25,25);
+rbank = linspace(5,25,5);
 VexAll_ = []; VexAllJ = [];
 VexInd_ = zeros(length(rbank),N*length(tt)); VexIndJ = zeros(length(rbank),N*length(tt));
 for rr = 1:length(rbank)
@@ -99,7 +107,7 @@ for rr = 1:length(rbank)
 end
 
 %% Make Figures
-% Color bank (default colors)
+% Color bank (default colors with sepecifc choices)
 cl = [0.8141484044598232, 0.2196847366397539, 0.3048058439061899;...
       0.9330257593233372, 0.3913110342176086, 0.27197231833910035;...
       0.9817762399077278, 0.6073817762399076, 0.3457900807381776;...
@@ -284,7 +292,7 @@ for rr = 1:length(rbank)
     V1I = cifv(t,rp,0,input,theta); VcellI{rr,1} = V1I;
     
     input.feedfowarde = wb_fe2; input.feedfowardi = wb_fi2;
-    V2I = cifv(t,rp,0,input,theta); VcellI{rr,1} = V2I;
+    V2I = cifv(t,rp,0,input,theta); VcellI{rr,2} = V2I;
 
     V1plot(:,rr,2) = V1I(:,1)-mean(V1I(:));
     V2plot(:,rr,2) = V2I(:,1)-mean(V2I(:));
@@ -341,8 +349,8 @@ xlabel('Time (s)'); ylabel('Voltage');
 idxs = binsearch(rbank,[5,15,25]); 
 for i = 1:length(idxs)
     idx = idxs(i);
-    [X1, Y1] = meshgrid(linspace(min(Vcell{idx,1}(:)), max(Vcell{idx,1}(:)), 50), linspace(min(Vcell{idx,2}(:)), max(Vcell{idx,2}(:)), 50));
-    Z1 = ksdensity([Vcell{idx,1}(:), Vcell{idx,2}(:)], [X1(:), Y1(:)]);
+    [X1, Y1] = meshgrid(linspace(min(VcellI{idx,1}(:)), max(VcellI{idx,1}(:)), 50), linspace(min(VcellI{idx,2}(:)), max(VcellI{idx,2}(:)), 50));
+    Z1 = ksdensity([VcellI{idx,1}(:), VcellI{idx,2}(:)], [X1(:), Y1(:)]);
     Z1 = reshape(Z1, size(X1));
     maxDensity1 = min(Z1(:));
 

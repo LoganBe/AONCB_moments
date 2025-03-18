@@ -2,7 +2,11 @@ clear; clc; close all
 rng(6895)
 set(0,'DefaultAxesFontSize',14)
 
-% DESCRIPTION HERE
+% Figure 6
+% Examine the effects of shared inputs on voltage correlations. 
+% First holds inhibitory paramters constant
+% Second holds excitatory paramters constant
+% Lastly changes in both excitatory and inhibitory firing rate
 %% Time Info and constants
 dt = 0.1; %Time step (ms)
 tmax = 3e3; %Max time (ms)

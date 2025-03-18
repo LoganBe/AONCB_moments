@@ -2,7 +2,12 @@ clear; clc; close all;
 rng(6895)
 set(0,'DefaultAxesFontSize',14)
 
-% Description Here
+% Figure 5
+% Uses Monte Carlo simulation to show the effects of input correlation on
+% subthreshold variability
+% First uses large weights for asynchronous/within-pool correlations/across-pool correlations
+% Second uses small weights for asynchronous/within-pool correlations/across-pool correlations
+
 %% Time Info and constants
 dt = 0.1; %Time step (ms)
 tmax = 1e3; %Max time (ms)
@@ -71,6 +76,7 @@ figure(2); clf; hold on
 imagesc(rbank,rbank,varVt')
 plot(rbank,rbank,'k','linewidth',2)
 xlim([0,50]); ylim([0,50])
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off
 colorbar
 set(gca,'Ydir','normal')
@@ -86,13 +92,13 @@ for i = 1:length(rbank)
     theta.K.ee = Ke; theta.r.ee = rbank(i);
     theta.K.ei = Ki; theta.r.ei = rbank(i);
 
-    [ye, yi, yre, yri] = makeffinput(theta,Ne,Ni,t,dt);
+    [ye, yi, yre, yri] = makeffinput(theta,N,0,t,dt);
     wb_fe = ye.*We./tausyn; % Weighted Excitatory input
     wb_fi = yi.*Wi./tausyn; % Weighted Inhibitory input
 
     input.feedfowarde = wb_fe;
     input.feedfowardi = wb_fi;
-    V(:,i) = cifv(t, Ne, Ni, input, theta);
+    V(:,i) = cifv(t, N, 0, input, theta);
 end
 
 % Theoretical Grid
@@ -113,6 +119,7 @@ figure(4); clf; hold on
 imagesc(rbank,rbank,varVt')
 plot(rbank,rbank,'k','linewidth',2)
 xlim([0,50]); ylim([0,50])
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off
 colorbar
 set(gca,'Ydir','normal')
@@ -135,13 +142,13 @@ for i = 1:length(rbank)
     theta.K.ee = Ke; theta.r.ee = rbank(i);
     theta.K.ei = Ki; theta.r.ei = rbank(i);
 
-    [ye, yi, yre, yri] = makeffinput(theta,Ne,Ni,t,dt);
+    [ye, yi, yre, yri] = makeffinput(theta,N,0,t,dt);
     wb_fe = ye.*We./tausyn; % Weighted Excitatory input
     wb_fi = yi.*Wi./tausyn; % Weighted Inhibitory input
 
     input.feedfowarde = wb_fe;
     input.feedfowardi = wb_fi;
-    V(:,i) = cifv(t, Ne, Ni, input, theta);
+    V(:,i) = cifv(t, N, 0, input, theta);
 end
 
 % Theoretical Grid
@@ -162,6 +169,7 @@ figure(6); clf; hold on
 imagesc(rbank,rbank,varVt')
 plot(rbank,rbank,'k','linewidth',2)
 xlim([0,50]); ylim([0,50])
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off
 colorbar
 set(gca,'Ydir','normal')
@@ -184,13 +192,13 @@ for i = 1:length(rbank)
     theta.K.ee = Ke; theta.r.ee = rbank(i);
     theta.K.ei = Ki; theta.r.ei = rbank(i);
 
-    [ye, yi, yre, yri] = makeffinput(theta,Ne,Ni,t,dt);
+    [ye, yi, yre, yri] = makeffinput(theta,N,0,t,dt);
     wb_fe = ye.*We./tausyn; % Weighted Excitatory input
     wb_fi = yi.*Wi./tausyn; % Weighted Inhibitory input
 
     input.feedfowarde = wb_fe;
     input.feedfowardi = wb_fi;
-    V(:,i) = cifv(t, Ne, Ni, input, theta);
+    V(:,i) = cifv(t, N, 0, input, theta);
 end
 
 % Theoretical Grid
@@ -211,6 +219,7 @@ figure(8); clf; hold on
 imagesc(rbank,rbank,varVt')
 plot(rbank,rbank,'k','linewidth',2)
 xlim([0,50]); ylim([0,50])
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off
 colorbar
 set(gca,'Ydir','normal')
@@ -233,13 +242,13 @@ for i = 1:length(rbank)
     theta.K.ee = Ke; theta.r.ee = rbank(i);
     theta.K.ei = Ki; theta.r.ei = rbank(i);
 
-    [ye, yi, yre, yri] = makeffinput(theta,Ne,Ni,t,dt);
+    [ye, yi, yre, yri] = makeffinput(theta,N,0,t,dt);
     wb_fe = ye.*We./tausyn; % Weighted Excitatory input
     wb_fi = yi.*Wi./tausyn; % Weighted Inhibitory input
 
     input.feedfowarde = wb_fe;
     input.feedfowardi = wb_fi;
-    V(:,i) = cifv(t, Ne, Ni, input, theta);
+    V(:,i) = cifv(t, N, 0, input, theta);
 end
 
 % Theoretical Grid
@@ -260,6 +269,7 @@ figure(10); clf; hold on
 imagesc(rbank,rbank,varVt')
 plot(rbank,rbank,'k','linewidth',2)
 xlim([0,50]); ylim([0,50])
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off
 colorbar
 set(gca,'Ydir','normal')
@@ -282,13 +292,13 @@ for i = 1:length(rbank)
     theta.K.ee = Ke; theta.r.ee = rbank(i);
     theta.K.ei = Ki; theta.r.ei = rbank(i);
 
-    [ye, yi, yre, yri] = makeffinput(theta,Ne,Ni,t,dt);
+    [ye, yi, yre, yri] = makeffinput(theta,N,0,t,dt);
     wb_fe = ye.*We./tausyn; % Weighted Excitatory input
     wb_fi = yi.*Wi./tausyn; % Weighted Inhibitory input
 
     input.feedfowarde = wb_fe;
     input.feedfowardi = wb_fi;
-    V(:,i) = cifv(t, Ne, Ni, input, theta);
+    V(:,i) = cifv(t, N, 0, input, theta);
 end
 
 % Theoretical Grid
@@ -309,6 +319,7 @@ figure(12); clf; hold on
 imagesc(rbank,rbank,varVt')
 plot(rbank,rbank,'k','linewidth',2)
 xlim([0,50]); ylim([0,50])
+xlabel('r_i (Hz)'); ylabel('r_e (Hz)')
 box off
 colorbar
 set(gca,'Ydir','normal')
