@@ -15,7 +15,9 @@ the observed magnitude of membrane voltage fluctuations. We found that accountin
 response to input drives modeled as correlated jump processes. Technically, we perform such an analysis using fixed-point techniques from queuing theory that are applicable in the stationary regime of activity. We found that weak but nonzero synchrony can consistently explain the experimentally reported voltage covariance and skewness. This confirms the role of synchrony as a primary driver of cortical variability and supports that physiological neural activity emerges as a population-level phenomenon, especially in the spontaneous regime.
 ## 📁 Repository Structure  
 ├── src/ # source code for methods and analysis
+
 ├── results/ # direct code usage to output figures used in paper
+
 └── README.md # This file
 
 ## 📊 Results
