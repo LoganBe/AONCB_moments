@@ -20,10 +20,5 @@ response to input drives modeled as correlated jump processes. Technically, we p
 
 └── README.md # This file
 
-## 📊 Results
-Example outputs for figures 
-
-![Figure Caption](results/figure1.png)
-
 
 
