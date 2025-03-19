@@ -1,12 +1,11 @@
-# AONCB_moments
-[![DOI](https://zenodo.org/badge/DOI/10.1101/2025.03.16.643547.svg)](https://doi.org/10.1101/2025.03.16.643547)  
-
+t# AONCB_moments
+[![DOI](https://zenodo.org/badge/DOI/10.48550/arXiv.2503.13702.svg)](https://doi.org/10.48550/arXiv.2503.13702)  
 This repository contains the code and datasets used in the paper:  
 
 **"SubSubthreshold moment analysis of neuronal populations driven by
 synchronous synaptic inputs"**  
 _Logan A. Becker, François Baccelli, Thibaud Taillefumier_  
-Published in **BioRxiv, 2025**  
+Published in **arXiv, 2025**  
 <!---📄 [Paper Link](https://doi.org/your-doi-here) --->
 
 ## 📜 Abstract  
